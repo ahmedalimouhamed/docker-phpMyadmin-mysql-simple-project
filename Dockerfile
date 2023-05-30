@@ -1,16 +1,10 @@
 FROM php:7.4-apache
 
-# Install PHP MySQL extension
-RUN docker-php-ext-install mysqli
+# Enable mod_rewrite
+RUN a2enmod rewrite
 
-# Copiez les fichiers de votre projet dans le conteneur
-COPY . /var/www/html
+# Change ownership of /var/www/html directory
+RUN chown -R www-data:www-data /var/www/html
 
-# Définissez le répertoire de travail
-WORKDIR /var/www/html
-
-# Exposez le port 80 pour accéder à votre application depuis l'extérieur
+COPY . /var/www/html/
 EXPOSE 80
-
-# Démarrez le serveur Apache et exécutez votre application PHP
-CMD ["php", "-S", "0.0.0.0:80"]
